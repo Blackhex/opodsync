@@ -61,6 +61,21 @@ function debug(string $message, ...$params): void
 	file_put_contents(DEBUG_LOG, date('Y-m-d H:i:s ') . vsprintf($message, $params) . PHP_EOL, FILE_APPEND);
 }
 
+function error(string $message, ...$params): void
+{
+	if (!ERRORS_LOG) {
+		return;
+	}
+
+	foreach ($params as $i => $param) {
+		if (is_object($param) || is_array($param)) {
+			$params[$i] = json_encode($param);
+		}
+	}
+
+	file_put_contents(ERRORS_LOG, date('Y-m-d H:i:s ') . vsprintf($message, $params) . PHP_EOL, FILE_APPEND);
+}
+
 foreach ($defaults as $const => $value) {
 	if (defined(__NAMESPACE__ . '\\' . $const)) {
 		continue;

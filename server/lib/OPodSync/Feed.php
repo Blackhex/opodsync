@@ -57,6 +57,8 @@ class Feed
 	public function fetch(): bool
 	{
 		if (function_exists('curl_exec')) {
+			debug('Feed::fetch(): using cURL to fetch feed: %s', $this->feed_url);
+
 			$ch = curl_init($this->feed_url);
 			curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: oPodSync']);
@@ -69,6 +71,7 @@ class Feed
 
 			if (false === $body) {
 				$error = curl_error($ch);
+				error('Feed::fetch(): cURL error while fetching feed %s: %s', $this->feed_url, $error);
 			}
 
 			if (PHP_VERSION_ID < 80500) {
@@ -76,6 +79,8 @@ class Feed
 			}
 		}
 		else {
+			debug('Feed::fetch(): using file_get_contents to fetch feed: %s', $this->feed_url);
+
 			$ctx = stream_context_create([
 				'http' => [
 					'header'          => 'User-Agent: oPodSync',

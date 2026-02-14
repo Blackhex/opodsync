@@ -263,10 +263,12 @@ class GPodder
 
 	public function updateFeedForSubscription(int $subscription): ?Feed
 	{
-		debug('updateFeedForSubscription(): %d', $subscription);
+		debug('updateFeedForSubscription(): subscription: %d', $subscription);
 
 		$db = DB::getInstance();
 		$url = $db->firstColumn('SELECT url FROM subscriptions WHERE id = ?;', $subscription);
+
+		debug('updateFeedForSubscription(): url: %s', $url);
 
 		if (!$url) {
 			return null;
@@ -274,7 +276,10 @@ class GPodder
 
 		$feed = new Feed($url);
 
+		debug('updateFeedForSubscription(): feed: %s', $feed);
+
 		if (!$feed->fetch()) {
+			error('updateFeedForSubscription(): failed to fetch feed: %s', $feed);
 			return null;
 		}
 
