@@ -263,8 +263,12 @@ class GPodder
 
 	public function updateFeedForSubscription(int $subscription): ?Feed
 	{
+		debug('updateFeedForSubscription(): subscription: %d', $subscription);
+
 		$db = DB::getInstance();
 		$url = $db->firstColumn('SELECT url FROM subscriptions WHERE id = ?;', $subscription);
+
+		debug('updateFeedForSubscription(): url: %s', $url);
 
 		if (!$url) {
 			return null;
@@ -272,7 +276,10 @@ class GPodder
 
 		$feed = new Feed($url);
 
+		debug('updateFeedForSubscription(): feed: %s', $feed);
+
 		if (!$feed->fetch()) {
+			error('updateFeedForSubscription(): failed to fetch feed: %s', $feed);
 			return null;
 		}
 
@@ -281,12 +288,20 @@ class GPodder
 		return $feed;
 	}
 
+	public function getSubscription(int $id): ?stdClass
+	{
+		$db = DB::getInstance();
+		return $db->firstRow('SELECT * FROM subscriptions WHERE id = ?;', $id);
+	}
+
 	public function getFeedForSubscription(int $subscription): ?Feed
 	{
 		$db = DB::getInstance();
 		$data = $db->firstRow('SELECT f.*
 			FROM subscriptions s INNER JOIN feeds f ON f.id = s.feed
 			WHERE s.id = ?;', $subscription);
+
+		debug('data: %s', $data);
 
 		if (!$data) {
 			return null;
@@ -299,6 +314,8 @@ class GPodder
 
 	public function addSubscription(string $url): ?string
 	{
+		debug('addSubscription(): %s', $url);
+
 		$url = filter_var($url, FILTER_VALIDATE_URL);
 
 		if ($url === false) {

@@ -448,6 +448,8 @@ class API
 
 	public function subscriptions(string $url): ?array
 	{
+		$this->debug('subscriptions: url: %s, method: %s', $url, $this->method);
+
 		$db = DB::getInstance();
 		$v2 = strpos($url, 'api/2/') !== false;
 
@@ -549,13 +551,22 @@ class API
 
 	public function updateFeedForSubscription(DB $db, int $subscription): ?Feed
 	{
+		$this->debug('updateFeedForSubscription(): subscription: %d', $subscription);
+
 		$url = $db->firstColumn('SELECT url FROM subscriptions WHERE id = ?;', $subscription);
+
+		$this->debug('updateFeedForSubscription(): url: %s', $url);
+
 		if (!$url) {
 			return null;
 		}
 
 		$feed = new Feed($url);
+
+		$this->debug('updateFeedForSubscription(): feed: %s', $feed);
+
 		if (!$feed->fetch()) {
+			$this->error('updateFeedForSubscription(): failed to fetch feed: %s', $feed);
 			return null;
 		}
 

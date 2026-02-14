@@ -128,6 +128,8 @@ class DB extends \SQLite3
 	{
 		$res = $this->prepare2($sql, ...$params)->execute();
 
+		debug('DB::simple(): sql: %s, params: %s, result: %s', $sql, $params, $res);
+
 		if (is_bool($res)) {
 			return null;
 		}

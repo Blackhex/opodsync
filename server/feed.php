@@ -14,6 +14,8 @@ $feed = $gpodder->getFeedForSubscription($id);
 $actions = $gpodder->listActions($id);
 $episodes = $gpodder->listEpisodes($id);
 
+debug('feed.php: feed: %s: id: %d', $feed, $id);
+
 if (!$feed) {
 	throw new UserException('Feed not found or empty');
 }
