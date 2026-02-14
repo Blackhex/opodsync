@@ -14,7 +14,11 @@ $success = null;
 
 // Handle new subscription
 if (!empty($_POST['feed_url'])) {
-	$error = $gpodder->addSubscription($_POST['feed_url']);
+	$url = $_POST['feed_url'];
+	if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+		$url = 'https://' . $url;
+	}
+	$error = $gpodder->addSubscription($url);
 	if (!$error) {
 		$success = 'Successfully subscribed to the feed!';
 	}

@@ -22,7 +22,7 @@
 	<fieldset>
 		<legend>Subscribe to a new podcast</legend>
 		<p class="center help">Enter the RSS feed URL of the podcast:</p>
-		<p class="center"><input type="url" name="feed_url" class="url" placeholder="https://example.com/feed.xml" required /> <button type="submit" class="btn sm">Subscribe</button></p>
+		<p class="center"><input type="text" name="feed_url" class="url" placeholder="https://example.com/feed.xml" required /> <button type="submit" class="btn sm">Subscribe</button></p>
 	</fieldset>
 </form>
 
