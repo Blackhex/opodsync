@@ -1,0 +1,5 @@
+services:
+  gpodder:
+    volumes:
+      - ..:/workspaces:cached
+    command: sleep infinity

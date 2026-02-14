@@ -2,6 +2,11 @@ FROM php:8.5-alpine
 LABEL Maintainer="BohwaZ <https://bohwaz.net/>" \
       Description="oPodSync"
 
+# Install dependencies
+RUN apk add --no-cache \
+    git \
+    make
+
 # Setup document root
 RUN mkdir -p /var/www/server/data
 
