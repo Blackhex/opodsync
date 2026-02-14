@@ -46,6 +46,21 @@ $defaults = [
 	'HTTP_SCHEME'                  => !empty($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http',
 ];
 
+function debug(string $message, ...$params): void
+{
+	if (!DEBUG_LOG) {
+		return;
+	}
+
+	foreach ($params as $i => $param) {
+		if (is_object($param) || is_array($param)) {
+			$params[$i] = json_encode($param);
+		}
+	}
+
+	file_put_contents(DEBUG_LOG, date('Y-m-d H:i:s ') . vsprintf($message, $params) . PHP_EOL, FILE_APPEND);
+}
+
 foreach ($defaults as $const => $value) {
 	if (defined(__NAMESPACE__ . '\\' . $const)) {
 		continue;
