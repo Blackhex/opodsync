@@ -1,0 +1,22 @@
+{
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.yml"
+  ],
+  "features": {
+    "ghcr.io/cirolosapio/devcontainers-features/alpine-php-mysql:0": {}
+  },
+  "name": "oPodSync Dev Container",
+  "service": "gpodder",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "42Crunch.vscode-openapi",
+        "darthminos.workspace-tasks",
+        "mhutchie.git-graph",
+        "ccisnedev.sqlite-inspector"
+      ]
+    }
+  }
+}
