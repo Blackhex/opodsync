@@ -517,6 +517,13 @@ class API
 						'changed' => $ts,
 						'deleted' => 0,
 					], ['user', 'url']);
+
+					// Get the subscription ID and fetch feed metadata
+					$subscription_id = $db->lastInsertRowID();
+
+					if ($subscription_id) {
+						$this->updateFeedForSubscription($db, $subscription_id);
+					}
 				}
 			}
 
@@ -538,6 +545,23 @@ class API
 		}
 
 		throw new APIException('Not implemented yet', 501);
+	}
+
+	public function updateFeedForSubscription(DB $db, int $subscription): ?Feed
+	{
+		$url = $db->firstColumn('SELECT url FROM subscriptions WHERE id = ?;', $subscription);
+		if (!$url) {
+			return null;
+		}
+
+		$feed = new Feed($url);
+		if (!$feed->fetch()) {
+			return null;
+		}
+
+		$feed->syncFromTransaction($db);
+
+		return $feed;
 	}
 
 	public function updates(): mixed
