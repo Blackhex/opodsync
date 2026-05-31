@@ -1,0 +1,69 @@
+{
+  "inputs": [
+    {
+      "args": "http://localhost:8080",
+      "command": "simpleBrowser.api.open",
+      "id": "openSimpleBrowser",
+      "type": "command"
+    }
+  ],
+  "tasks": [
+    {
+      "command": "php -S 0.0.0.0:8080 -t server server/index.php",
+      "isBackground": true,
+      "label": "Start Server",
+      "presentation": {
+        "group": "opodsync",
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": {
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Development Server.*started.*",
+          "endsPattern": ".*Development Server.*started.*"
+        },
+        "pattern": [
+          {
+            "file": 1,
+            "location": 2,
+            "message": 3,
+            "regexp": "."
+          }
+        ]
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "type": "shell"
+    },
+    {
+      "command": "${input:openSimpleBrowser}",
+      "dependsOn": [
+        "Start Server"
+      ],
+      "label": "Open in Browser",
+      "presentation": {
+        "group": "opodsync",
+        "panel": "shared",
+        "reveal": "silent"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "dependsOn": [
+        "Start Server",
+        "Open in Browser"
+      ],
+      "dependsOrder": "sequence",
+      "label": "Serve and Open in Browser",
+      "problemMatcher": [],
+      "runOptions": {
+        "instanceLimit": 1,
+        "runOn": "folderOpen"
+      }
+    }
+  ],
+  "version": "2.0.0"
+}

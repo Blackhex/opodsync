@@ -1,0 +1,49 @@
+{
+  "extensions": {
+    "recommendations": [
+      "mhutchie.git-graph",
+      "ccisnedev.sqlite-inspector"
+    ]
+  },
+  "folders": [
+    {
+      "path": ".."
+    }
+  ],
+  "settings": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "workspaceTasks.enabledTaskTypes": {
+      "ant": false,
+      "ruby": false,
+      "bitbucket": false,
+      "cake": false,
+      "cmake": false,
+      "composer": false,
+      "cargo": false,
+      "cargo-make": false,
+      "deno": false,
+      "eslint": false,
+      "github-actions": false,
+      "gitlab-ci": false,
+      "go": false,
+      "gradle": false,
+      "grunt": false,
+      "just": false,
+      "gulp": false,
+      "jupyter": false,
+      "maven": false,
+      "msbuild": false,
+      "mise": false,
+      "npm": false,
+      "poe": false,
+      "pipenv": false,
+      "poetry": false,
+      "rake": false,
+      "webpack": false,
+      "typescript": false,
+      "taskfile": false,
+      "shell": false
+    }
+  }
+}
