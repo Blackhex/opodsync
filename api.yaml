@@ -1,0 +1,28 @@
+openapi: '3.0.3'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+  - url: http://localhost:3481
+  - url: http://192.168.50.118:3481
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+paths:
+  /register.php:
+    post:
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: OK
+  /api/2/auth/Test/login.json:
+    post:
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: OK
