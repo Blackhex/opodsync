@@ -73,6 +73,10 @@ foreach ($defaults as $const => $value) {
 }
 
 if (!defined(__NAMESPACE__ . '\BASE_URL')) {
+	if (!isset($_SERVER['SERVER_NAME'])) {
+		throw new \LogicException('SERVER_NAME is not defined. If running in CLI, please set BASE_URL in config.local.php');
+	}
+
 	$name = $_SERVER['SERVER_NAME'];
 	$port = !in_array($_SERVER['SERVER_PORT'], [80, 443]) ? ':' . $_SERVER['SERVER_PORT'] : '';
 	$root = '/';
