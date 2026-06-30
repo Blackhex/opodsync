@@ -14,7 +14,6 @@ class API
 	public ?string $base_path;
 	protected ?string $path;
 	protected ?string $format = null;
-	protected string $log = '';
 
 	public function __construct()
 	{
@@ -34,16 +33,19 @@ class API
 			return;
 		}
 
-		$this->log .= date('Y-m-d H:i:s ') . vsprintf($message, $params) . PHP_EOL;
-	}
+		$fp = @fopen(DEBUG_LOG, 'a');
 
-	public function __destruct()
-	{
-		if (!DEBUG_LOG || $this->log === '') {
+		if (!$fp) {
 			return;
 		}
 
-		file_put_contents(DEBUG_LOG, $this->log, FILE_APPEND);
+		// Write in parts to avoid duplicating large messages (eg. full API
+		// responses) in memory. When there are no params, the message is
+		// written verbatim so it is never passed through vsprintf().
+		fwrite($fp, date('Y-m-d H:i:s '));
+		fwrite($fp, $params ? vsprintf($message, $params) : $message);
+		fwrite($fp, PHP_EOL);
+		fclose($fp);
 	}
 
 	public function queryWithData(string $sql, ...$params): array
@@ -393,7 +395,12 @@ class API
 
 		$return = $this->route($url);
 
-		$this->debug("RETURN:\n%s", json_encode($return, JSON_PRETTY_PRINT));
+		// Only encode the (potentially huge) response when logging is enabled,
+		// and pass it as the message so it is not copied again by vsprintf().
+		if (DEBUG_LOG) {
+			$this->debug('RETURN:');
+			$this->debug(json_encode($return, JSON_PRETTY_PRINT));
+		}
 
 		if ($this->format === 'opml') {
 			if ($this->section !== 'subscriptions') {
